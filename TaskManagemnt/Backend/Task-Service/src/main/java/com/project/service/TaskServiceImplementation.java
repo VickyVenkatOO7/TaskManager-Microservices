@@ -94,7 +94,7 @@ public class TaskServiceImplementation implements TaskService{
 	
 
 	@Override
-	public List<Task> assignedUsersTasks(Long userId, TaskStatus status) {
+	public List<Task> assignedUsersTask(Long userId, TaskStatus status) {
 		
 		List<Task> allTasks = taskRepository.findByAssignedUserId(userId);
 		

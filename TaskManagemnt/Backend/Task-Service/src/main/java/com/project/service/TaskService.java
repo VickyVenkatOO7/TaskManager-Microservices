@@ -19,7 +19,7 @@ public interface TaskService {
 	
 	Task assignedToUser(Long userId, Long taskId) throws Exception;
 	
-	List<Task> assignedUsersTasks (Long userId, TaskStatus status);
+	List<Task> assignedUsersTask (Long userId, TaskStatus status);
 	
 	Task completeTask(Long taskId) throws Exception;
 
