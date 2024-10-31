@@ -1,0 +1,5 @@
+package com.project.request;
+
+public class LoginRequest {
+
+}
