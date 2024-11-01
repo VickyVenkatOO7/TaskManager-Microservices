@@ -1,7 +1,0 @@
-package com.project.config;
-
-import jakarta.servlet.Filter;
-
-public class JwtTokenValidator implements Filter{
-
-}
