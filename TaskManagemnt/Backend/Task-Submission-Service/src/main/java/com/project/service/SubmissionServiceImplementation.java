@@ -21,7 +21,8 @@ public class SubmissionServiceImplementation implements SubmissionService{
 
 	@Override
 	public Submission submitTask(Long taskId, String githubLink, Long userId, String jwt) throws Exception {
-		TaskDto task = taskService.getTaskById(userId, jwt);
+		System.out.println("From Submission ServiceImplementation : " + taskId);
+		TaskDto task = taskService.getTaskById(taskId, jwt);
 		if (task != null) {
 			Submission submission = new Submission();
 			submission.setTaskId(taskId);

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.project.model.TaskDto;
 
-@FeignClient(name = "SUBMISSION-SERVICE", url = "http://localhost:5003/")
+@FeignClient(name = "SUBMISSION-SERVICE", url = "http://localhost:5002/")
 public interface TaskService {
 	
 	@GetMapping("/api/tasks/{id}")
