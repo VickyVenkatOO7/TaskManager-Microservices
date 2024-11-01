@@ -23,7 +23,7 @@ import com.project.service.TaskService;
 import com.project.service.UserService;
 
 @RestController
-@RequestMapping("/api/tasks")
+@RequestMapping("/api/task")
 public class TaskController {
 	
 	@Autowired
