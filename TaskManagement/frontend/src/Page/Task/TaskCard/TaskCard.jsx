@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import UserList from '../UserList';
 import SubmissionList from '../SubmissionList';
-import EditTaskForm from '../EditTaskCard';
+import EditTaskForm from '../UpdateTaskForm';
 
 const role = "ROLE_ADMIN"
 const TaskCard = () => {
