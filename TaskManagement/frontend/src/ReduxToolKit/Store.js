@@ -1,9 +1,11 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { thunk } from "redux-thunk";
 import authReducer from "./AuthSlice";
+import TaskSlice from "./TaskSlice";
 
 const rootReducer = combineReducers({
-    auth: authReducer
+    auth: authReducer,
+    task: TaskSlice
 })
 
 const store = configureStore({
