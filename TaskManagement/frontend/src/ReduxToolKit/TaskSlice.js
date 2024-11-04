@@ -1,28 +1,28 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { setAuthHeader } from "../Api/api";
+import { api, setAuthHeader } from "../Api/api";
 
 export const fetchTasks = createAsyncThunk("task/fetchTasks",
-    async({status}) => {
+    async ({ status }) => {
         setAuthHeader(localStorage.getItem("jwt"), api)
         try {
-            const {data} = await api.get("/api/tasks",{
-                params: {status}
-            })
+            const { data } = await api.get("/api/task", {
+                params: { status },
+            });
             console.log("fetch tasks : ", data);
             return data;
         } catch (error) {
             console.log("error ", error);
             throw Error(error.response.data.error);
         }
-})
+    })
 
 
 export const fetchUsersTasks = createAsyncThunk("task/fetchUsersTasks",
-    async({status}) => {
+    async ({ status }) => {
         setAuthHeader(localStorage.getItem("jwt"), api)
         try {
-            const {data} = await api.get("/api/tasks/user",{
-                params: {status}
+            const { data } = await api.get("/api/task/user", {
+                params: { status }
             })
             console.log("fetch users tasks : ", data);
             return data;
@@ -30,71 +30,71 @@ export const fetchUsersTasks = createAsyncThunk("task/fetchUsersTasks",
             console.log("error ", error);
             throw Error(error.response.data.error);
         }
-})
+    })
 
 
 export const fetchTasksById = createAsyncThunk("task/fetchTasksById",
-    async(taskId) => {
+    async (taskId) => {
         setAuthHeader(localStorage.getItem("jwt"), api)
         try {
-            const {data} = await api.get(`/api/tasks/${taskId}`);
+            const { data } = await api.get(`/api/task/${taskId}`);
             console.log("fetch tasks by id : ", data);
             return data;
         } catch (error) {
             console.log("error ", error);
             throw Error(error.response.data.error);
         }
-})
+    })
 
 
 export const createTask = createAsyncThunk("task/createTask",
-    async(taskData) => {
+    async (taskData) => {
         setAuthHeader(localStorage.getItem("jwt"), api)
         try {
-            const {data} = await api.post(`/api/tasks`, taskData);
+            const { data } = await api.post(`/api/task`, taskData);
             console.log("Created Task : ", data);
             return data;
         } catch (error) {
             console.log("error ", error);
             throw Error(error.response.data.error);
         }
-})
+    })
 
 
 export const updateTask = createAsyncThunk("task/updateTask",
-    async({id, updatedTaskData}) => {
+    async ({ id, updatedTaskData }) => {
         setAuthHeader(localStorage.getItem("jwt"), api)
         try {
-            const {data} = await api.put(`/api/tasks/${id}`, updatedTaskData);
+            const { data } = await api.put(`/api/task/${id}`, updatedTaskData);
             console.log("Updated Task : ", data);
             return data;
         } catch (error) {
             console.log("error ", error);
             throw Error(error.response.data.error);
         }
-})
+    })
 
 
 export const assignedTaskToUser = createAsyncThunk("task/assignedTaskToUser",
-    async({taskId, userId}) => {
+    async ({ taskId, userId }) => {
         setAuthHeader(localStorage.getItem("jwt"), api)
         try {
-            const {data} = await api.put(`/api/tasks/${taskId}/user/${userId}/assigned`);
+            const { data } = await api.put(`/api/task/${taskId}/user/${userId}/assigned`);
             console.log("Assigned Task : ", data);
             return data;
         } catch (error) {
             console.log("error ", error);
             throw Error(error.response.data.error);
         }
-})
+    })
 
 
 export const deleteTask = createAsyncThunk("task/deleteTask",
-    async({taskId}) => {
+    async ({ taskId }) => {
         setAuthHeader(localStorage.getItem("jwt"), api)
         try {
-            const {data} = await api.delete(
-                `/api/tasks/${taskId}`
+            const { data } = await api.delete(
+                `/api/task/${taskId}`
             );
             console.log("Task Deleted Successfully");
             return taskId;
@@ -102,7 +102,7 @@ export const deleteTask = createAsyncThunk("task/deleteTask",
             console.log("error ", error);
             throw Error(error.response.data.error);
         }
-})
+    })
 
 
 const taskSlice = createSlice({
@@ -117,60 +117,60 @@ const taskSlice = createSlice({
     reducer: {},
     extraReducers: (builder) => {
         builder
-        .addCase(fetchTasks.pending,(state) => {
-            state.loading=true;
-            state.error=null
-        })
-        .addCase(fetchTasks.fulfilled, (state, action) => {
-            state.loading = false;
-            state.tasks = action.payload;
-        })
-        .addCase(fetchTasks.rejected, (state, action) => {
-            state.error = action.error.message;
-            state.loading = false;
-        })
-        .addCase(fetchUsersTasks.pending,(state) => {
-            state.loading=true;
-            state.error=null
-        })
-        .addCase(fetchUsersTasks.fulfilled, (state, action) => {
-            state.loading = false;
-            state.usersTask = action.payload;
-        })
-        .addCase(fetchUsersTasks.rejected, (state, action) => {
-            state.error = action.error.message;
-            state.loading = false;
-        })
-        .addCase(createTask.pending,(state) => {
-            state.loading=true;
-            state.error=null
-        })
-        .addCase(createTask.fulfilled, (state, action) => {
-            state.loading = false;
-            state.tasks.push(action.payload);
-        })
-        .addCase(createTask.rejected, (state, action) => {
-            state.error = action.error.message;
-            state.loading = false;
-        })
-        .addCase(updateTask.fulfilled, (state, action) => {
-            const updatedTask = action.payload;
-            state.loading = false;
-            state.tasks = state.tasks.map((task) => 
-                task.id === updatedTask.id ? { ...task, ...updatedTask } : task
-            );
-        })
-        .addCase(assignedTaskToUser.fulfilled, (state, action) => {
-            const updatedTask = action.payload;
-            state.loading = false;
-            state.tasks = state.tasks.map((task) => 
-                task.id === updatedTask.id ? { ...task, ...updatedTask } : task
-            );
-        })
-        .addCase(deleteTask.fulfilled, (state, action) => {
-            state.loading = false;
-            state.tasks = state.tasks.filter((task) => task.id !== action.payload)
-        })
+            .addCase(fetchTasks.pending, (state) => {
+                state.loading = true;
+                state.error = null
+            })
+            .addCase(fetchTasks.fulfilled, (state, action) => {
+                state.loading = false;
+                state.tasks = action.payload;
+            })
+            .addCase(fetchTasks.rejected, (state, action) => {
+                state.error = action.error.message;
+                state.loading = false;
+            })
+            .addCase(fetchUsersTasks.pending, (state) => {
+                state.loading = true;
+                state.error = null
+            })
+            .addCase(fetchUsersTasks.fulfilled, (state, action) => {
+                state.loading = false;
+                state.usersTask = action.payload;
+            })
+            .addCase(fetchUsersTasks.rejected, (state, action) => {
+                state.error = action.error.message;
+                state.loading = false;
+            })
+            .addCase(createTask.pending, (state) => {
+                state.loading = true;
+                state.error = null
+            })
+            .addCase(createTask.fulfilled, (state, action) => {
+                state.loading = false;
+                state.tasks.push(action.payload);
+            })
+            .addCase(createTask.rejected, (state, action) => {
+                state.error = action.error.message;
+                state.loading = false;
+            })
+            .addCase(updateTask.fulfilled, (state, action) => {
+                const updatedTask = action.payload;
+                state.loading = false;
+                state.tasks = state.tasks.map((task) =>
+                    task.id === updatedTask.id ? { ...task, ...updatedTask } : task
+                );
+            })
+            .addCase(assignedTaskToUser.fulfilled, (state, action) => {
+                const updatedTask = action.payload;
+                state.loading = false;
+                state.tasks = state.tasks.map((task) =>
+                    task.id === updatedTask.id ? { ...task, ...updatedTask } : task
+                );
+            })
+            .addCase(deleteTask.fulfilled, (state, action) => {
+                state.loading = false;
+                state.tasks = state.tasks.filter((task) => task.id !== action.payload)
+            })
     }
 });
 

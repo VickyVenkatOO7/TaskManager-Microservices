@@ -27,23 +27,20 @@ spring:
             - Path=/api/submission/**, /submission/**
 
 
-#      default-filters: 
-#        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
-#      globalcors:
-#        cors-configurations: 
-#          '[/**]' :
-#            allowedOrigins: "*"
-#            allowedMethods: "*"
-#            allowedHeaders: "*"
+      default-filters: 
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        cors-configurations: 
+          '[/**]' :
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
     
     
     
 eureka :
   instance : 
     prefer-ip-address : true
-#    lease-renewal-interval-in-seconds: 10
-#    lease-expiration-duration-in-seconds: 30
-#    health-check-url-path: /actuator/health
   client : 
     fetch-registry : true
     register-with-eureka : true

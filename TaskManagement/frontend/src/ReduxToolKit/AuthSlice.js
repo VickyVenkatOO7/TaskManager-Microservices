@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { BASE_URL, setAuthHeader } from "../Api/api";
+import { api, BASE_URL, setAuthHeader } from "../Api/api";
 import axios from "axios";
 
 export const login = createAsyncThunk("auth/login", async(userData) => {
@@ -32,7 +32,6 @@ export const register = createAsyncThunk("auth/register", async(userData) => {
 export const logout = createAsyncThunk("auth/logout", async(userData) => {
     try {
         localStorage.clear();
-        return data;
     } catch (error) {
         console.log("catch error", error);
         throw Error(error.response.data.error);
