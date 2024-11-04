@@ -4,15 +4,17 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import UserList from '../UserList';
 import SubmissionList from '../SubmissionList';
 import EditTaskForm from '../UpdateTaskForm';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteTask } from '../../../ReduxToolKit/TaskSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
+import SubmitFormModel from '../SubmitFormModel';
 
 const role = "ROLE_ADMIN"
 const TaskCard = ({ item }) => {
     const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
+    const {auth} = useSelector(store => store);
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const openMenu = Boolean(anchorEl);
@@ -26,6 +28,9 @@ const TaskCard = ({ item }) => {
 
 
     const handleOpenUserList = () => {
+        const updatedParams = new URLSearchParams(location.search);
+        updatedParams.set("taskId", item.id);
+        navigate(`${location.pathname}?${updatedParams.toString()}`)
         setOpenUserList(true);
         handleMenuClose();
     }
@@ -34,12 +39,27 @@ const TaskCard = ({ item }) => {
         setOpenUserList(false);
     }
 
+    const [OpenSubmitFormModel, setOpenSubmitFormModel] = useState(false);
+    const handleCloseSubmitFormModel = () => {
+        setOpenSubmitFormModel(false);
+    }
+    const handleOpenSubmitFormModel = () => {
+        const updatedParams = new URLSearchParams(location.search);
+        updatedParams.set("taskId", item.id);
+        navigate(`${location.pathname}?${updatedParams.toString()}`)
+        setOpenSubmitFormModel(true);
+        handleMenuClose();
+    }
+
 
     const [OpenSubmissionList, setOpenSubmissionList] = useState(false);
     const handleCloseSubmissionList = () => {
         setOpenSubmissionList(false);
     }
     const handleOpenSubmissionList = () => {
+        const updatedParams = new URLSearchParams(location.search);
+        updatedParams.set("taskId", item.id);
+        navigate(`${location.pathname}?${updatedParams.toString()}`)
         setOpenSubmissionList(true);
         handleMenuClose();
     }
@@ -60,9 +80,9 @@ const TaskCard = ({ item }) => {
 
     const handleOpenUpdateTaskModel = () => {
         const updatedParams = new URLSearchParams(location.search);
-        setOpenUpdateTaskForm(true);
         updatedParams.set("taskId", item.id);
         navigate(`${location.pathname}?${updatedParams.toString()}`)
+        setOpenUpdateTaskForm(true);
         handleMenuClose();
     }
 
@@ -115,16 +135,19 @@ const TaskCard = ({ item }) => {
                             'aria-labelledby': 'basic-button',
                         }}
                     >
-                        {
-                            role === "ROLE_ADMIN" ? (
+                        {auth.user?.role === "ROLE_ADMIN" ? (
                                 <>
                                     <MenuItem onClick={handleOpenUserList}>Assigned User</MenuItem>
-                                    <MenuItem onClick={handleOpenSubmissionList}>See Submissions</MenuItem>
+                                    {<MenuItem onClick={handleOpenSubmissionList}>
+                                        See Submissions
+                                    </MenuItem>}
                                     <MenuItem onClick={handleOpenUpdateTaskModel}>Edit</MenuItem>
                                     <MenuItem onClick={handleDeleteTask}>Delete</MenuItem>
                                 </>
                             ) : (
-                                <></>
+                                <>
+                                    <MenuItem onClick={handleOpenSubmitFormModel}>submit</MenuItem>
+                                </>
                             )}
                     </Menu>
                 </div>
@@ -132,6 +155,7 @@ const TaskCard = ({ item }) => {
             <UserList open={OpenUserList} handleClose={handleCloseUserList} />
             <SubmissionList open={OpenSubmissionList} handleClose={handleCloseSubmissionList} />
             <EditTaskForm item = {item} open={OpenUpdateTaskForm} handleClose={handleCloseUpdateTaskForm} />
+            <SubmitFormModel open={OpenSubmitFormModel} handleClose={handleCloseSubmitFormModel}/>
         </div>
     )
 }
