@@ -90,7 +90,7 @@ export const assignedTaskToUser = createAsyncThunk("task/assignedTaskToUser",
 
 
 export const deleteTask = createAsyncThunk("task/deleteTask",
-    async ({ taskId }) => {
+    async (taskId) => {
         setAuthHeader(localStorage.getItem("jwt"), api)
         try {
             const { data } = await api.delete(
@@ -136,6 +136,10 @@ const taskSlice = createSlice({
             .addCase(fetchUsersTasks.fulfilled, (state, action) => {
                 state.loading = false;
                 state.usersTask = action.payload;
+            })
+            .addCase(fetchTasksById.fulfilled, (state, action) => {
+                state.loading = false;
+                state.taskDetails = action.payload;
             })
             .addCase(fetchUsersTasks.rejected, (state, action) => {
                 state.error = action.error.message;

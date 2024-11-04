@@ -4,9 +4,15 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import UserList from '../UserList';
 import SubmissionList from '../SubmissionList';
 import EditTaskForm from '../UpdateTaskForm';
+import { useDispatch } from 'react-redux';
+import { deleteTask } from '../../../ReduxToolKit/TaskSlice';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 
 const role = "ROLE_ADMIN"
-const TaskCard = () => {
+const TaskCard = ({ item }) => {
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const openMenu = Boolean(anchorEl);
@@ -18,38 +24,50 @@ const TaskCard = () => {
         setAnchorEl(null);
     };
 
-    
-    const handleOpenUserList = () =>{
+
+    const handleOpenUserList = () => {
         setOpenUserList(true);
         handleMenuClose();
     }
     const [OpenUserList, setOpenUserList] = useState(false);
-    const handleCloseUserList = () =>{
+    const handleCloseUserList = () => {
         setOpenUserList(false);
     }
 
 
     const [OpenSubmissionList, setOpenSubmissionList] = useState(false);
-    const handleCloseSubmissionList = () =>{
+    const handleCloseSubmissionList = () => {
         setOpenSubmissionList(false);
     }
-    const handleOpenSubmissionList = () =>{
+    const handleOpenSubmissionList = () => {
         setOpenSubmissionList(true);
         handleMenuClose();
     }
 
 
     const [OpenUpdateTaskForm, setOpenUpdateTaskForm] = useState(false);
-    const handleCloseUpdateTaskForm = () =>{
+    const handleCloseUpdateTaskForm = () => {
         setOpenUpdateTaskForm(false);
     }
-    const handleOpenTaskUpdateModel = () =>{
+
+    const handleRemoveTaskIdParams = () => {
+        const updatedParams = new URLSearchParams(location.search);
+        updatedParams.delete("filter");
+        const queryString = updatedParams.toString();
+        const updatedPath = queryString?`${location.pathname}?${queryString}`:location.pathname;
+        navigate(updatedPath);
+    }
+
+    const handleOpenUpdateTaskModel = () => {
+        const updatedParams = new URLSearchParams(location.search);
         setOpenUpdateTaskForm(true);
+        updatedParams.set("taskId", item.id);
+        navigate(`${location.pathname}?${updatedParams.toString()}`)
         handleMenuClose();
     }
 
-    const handleDeleteTask = () =>{
-        
+    const handleDeleteTask = () => {
+        dispatch(deleteTask(item.id));
         handleMenuClose();
     }
 
@@ -58,20 +76,23 @@ const TaskCard = () => {
             <div className='card lg:flex justify-between'>
                 <div className='lg:flex gap-5 items-center space-y-2 w-[90%] lg:w-[70%]'>
                     <div className=''>
-                        <img className='lg:w-[7rem] lg:h-[7rem] object-cover' src="https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=400" alt="" />
+                        <img 
+                            className='lg:w-[7rem] lg:h-[7rem] object-cover' 
+                            src={item.image} 
+                            alt="" />
                     </div>
                     <div className='space-y-5'>
                         <div className='space-y-2'>
-                            <h1 className='font-bold text-lg'>Car Rental Website</h1>
-                            <p className='text-gray-500 text-sm'>Use latest framewors and technologies to make this website.</p>
+                            <h1 className='font-bold text-lg'>{item.title}</h1>
+                            <p className='text-gray-500 text-sm'>{item.description}</p>
                         </div>
 
                         <div className='flex flex-wrap gap-2 items-center'>
-
-                            {[1, 1, 1, 1].map((item) => <span className='py-1 px-5 rounded-full techStack'>
-                                ReactJs
-                            </span>)}
-
+                            {item.tags.map((item) => (
+                                <span className='py-1 px-5 rounded-full techStack'>
+                                {item}
+                            </span>
+                        ))}
                         </div>
                     </div>
                 </div>
@@ -95,22 +116,22 @@ const TaskCard = () => {
                         }}
                     >
                         {
-                            role === "ROLE_ADMIN" ? ( 
-                            <>
-                                <MenuItem onClick={handleOpenUserList}>Assigned User</MenuItem>
-                                <MenuItem onClick={handleOpenSubmissionList}>See Submissions</MenuItem>
-                                <MenuItem onClick={handleOpenTaskUpdateModel}>Edit</MenuItem>
-                                <MenuItem onClick={handleDeleteTask}>Delete</MenuItem>
-                            </>
+                            role === "ROLE_ADMIN" ? (
+                                <>
+                                    <MenuItem onClick={handleOpenUserList}>Assigned User</MenuItem>
+                                    <MenuItem onClick={handleOpenSubmissionList}>See Submissions</MenuItem>
+                                    <MenuItem onClick={handleOpenUpdateTaskModel}>Edit</MenuItem>
+                                    <MenuItem onClick={handleDeleteTask}>Delete</MenuItem>
+                                </>
                             ) : (
-                              <></>
-                        ) }
+                                <></>
+                            )}
                     </Menu>
                 </div>
             </div>
-            <UserList open={OpenUserList} handleClose={handleCloseUserList}/>
-            <SubmissionList open={OpenSubmissionList} handleClose={handleCloseSubmissionList}/>
-            <EditTaskForm open={OpenUpdateTaskForm} handleClose={handleCloseUpdateTaskForm}/>
+            <UserList open={OpenUserList} handleClose={handleCloseUserList} />
+            <SubmissionList open={OpenSubmissionList} handleClose={handleCloseSubmissionList} />
+            <EditTaskForm item = {item} open={OpenUpdateTaskForm} handleClose={handleCloseUpdateTaskForm} />
         </div>
     )
 }

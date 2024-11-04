@@ -26,7 +26,7 @@ public class Task {
 	
 	private Long assignedUserId;
 	
-	private List<String> tag = new ArrayList<>();
+	private List<String> tags = new ArrayList<>();
 	
 	private TaskStatus status;
 	

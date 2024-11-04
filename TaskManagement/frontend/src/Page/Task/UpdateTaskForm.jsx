@@ -5,6 +5,10 @@ import { Autocomplete, Button, formControlClasses, Grid, TextField } from '@mui/
 import { useState } from 'react';
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchTasksById, updateTask } from '../../ReduxToolKit/TaskSlice';
+import { useLocation } from 'react-router-dom';
 
 const style = {
     position: 'absolute',
@@ -18,8 +22,14 @@ const style = {
     p: 4,
 };
 
-const tags = ["Angular", "React", "Vuejs", "Spring boot", "Node js", "Python"]
-export default function UpdateTaskForm({ handleClose, open }) {
+const tags = ["Angular", "React", "Vuejs", "Spring boot", "Node js", "Python"];
+
+export default function UpdateTaskForm({ item, handleClose, open }) {
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const taskId = queryParams.get("taskId");
+    const {task} = useSelector(store => store);
 
     const [formData, setFormData] = useState({
         title: "",
@@ -72,8 +82,17 @@ export default function UpdateTaskForm({ handleClose, open }) {
         formData.deadline = formatDate(deadline);
         formData.tags = selectedTags
         console.log("formData : ",formData, "deadline : ",formData.deadline);
+        dispatch(updateTask({id: taskId, updatedTaskData: formData}));
         handleClose();
-    }
+    };
+
+    useEffect(() => {
+        dispatch(fetchTasksById(taskId));
+    }, [taskId])
+
+    useEffect(() => {
+        if (task.taskDetails) setFormData(task.taskDetails)
+    }, [task.taskDetails])
 
     return (
         <div>
