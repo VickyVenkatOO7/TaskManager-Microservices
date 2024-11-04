@@ -23,7 +23,7 @@ const Sidebar = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [activeMenu, setActiveMenu] = useState("DONE")
+    const [activeMenu, setActiveMenu] = useState("Home")
 
     const [OpenCreateTaskForm, setOpenCreateTaskForm] = useState(false);
     const handleCloseCreateTaskForm = () =>{

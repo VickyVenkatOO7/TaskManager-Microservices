@@ -29,7 +29,7 @@ export default function UpdateTaskForm({ item, handleClose, open }) {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const taskId = queryParams.get("taskId");
-    const {task} = useSelector(store => store);
+    const { task } = useSelector(store => store);
 
     const [formData, setFormData] = useState({
         title: "",
@@ -56,7 +56,7 @@ export default function UpdateTaskForm({ item, handleClose, open }) {
     const handleDeadlineChange = (date) => {
         setFormData({
             ...formData,
-            deadline : date
+            deadline: date
         })
     }
 
@@ -69,25 +69,26 @@ export default function UpdateTaskForm({ item, handleClose, open }) {
             $m: minutes,
             $s: seconds,
             $ms: milliseconds,
-            } = input;
+        } = input;
 
-            const date = new Date(year, month, day, hours, minutes, seconds, milliseconds);
-            const formatedDate = date.toISOString();
-            return formatedDate;
+        const date = new Date(year, month, day, hours, minutes, seconds, milliseconds);
+        const formatedDate = date.toISOString();
+        return formatedDate;
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const {deadline} = formData;
+        const { deadline } = formData;
         formData.deadline = formatDate(deadline);
         formData.tags = selectedTags
-        console.log("formData : ",formData, "deadline : ",formData.deadline);
-        dispatch(updateTask({id: taskId, updatedTaskData: formData}));
+        console.log("formData : ", formData, "deadline : ", formData.deadline);
+        dispatch(updateTask({ id: taskId, updatedTaskData: formData }));
         handleClose();
     };
 
     useEffect(() => {
-        dispatch(fetchTasksById(taskId));
+        console.log("From UpdateTaskForm taskId : ", taskId);
+        dispatch(fetchTasksById({taskId}));
     }, [taskId])
 
     useEffect(() => {
@@ -155,21 +156,21 @@ export default function UpdateTaskForm({ item, handleClose, open }) {
 
                             <Grid item xs={12}>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DateTimePicker 
-                                    onChange={handleDeadlineChange}
-                                    className='w-full' 
-                                    label="Deadline"
-                                    renderInput={(params) => <TextField {...params}/>}
+                                    <DateTimePicker
+                                        onChange={handleDeadlineChange}
+                                        className='w-full'
+                                        label="Deadline"
+                                        renderInput={(params) => <TextField {...params} />}
                                     />
                                 </LocalizationProvider>
                             </Grid>
 
                             <Grid item xs={12}>
-                                <Button 
-                                fullWidth
-                                className='customButton'
-                                type='submit'
-                                sx={{padding:".9rem"}}>
+                                <Button
+                                    fullWidth
+                                    className='customButton'
+                                    type='submit'
+                                    sx={{ padding: ".9rem" }}>
                                     update
                                 </Button>
                             </Grid>

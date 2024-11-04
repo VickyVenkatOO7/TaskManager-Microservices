@@ -3,13 +3,13 @@ import { darkTheme } from "./Theme/darkTheme";
 import Navbar from "./Page/Navbar/Navbar";
 import Home from "./Page/Home/Home";
 import Auth from "./Page/Auth/Auth";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTasks } from "./ReduxToolKit/TaskSlice";
 import { getUserProfile } from "./ReduxToolKit/AuthSlice";
 
 function App() {
-  const user = true;
+  //const user = true;
   const dispatch = useDispatch();
   const {task, auth} = useSelector(store => store)
 

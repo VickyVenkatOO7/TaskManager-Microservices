@@ -12,13 +12,14 @@ const TaskList = () => {
   const filterValue = queryParams.get("filter");
 
   useEffect(() => {
-    if (auth.user?.role == "ROLE_ADMIN") {
+    if (auth.user?.role === "ROLE_ADMIN") {
       dispatch(fetchTasks({status:filterValue}));
     }
     else {
       dispatch(fetchUsersTasks({status:filterValue}));
     }
   }, [filterValue]);
+
 
   console.log("task ", task);
   
