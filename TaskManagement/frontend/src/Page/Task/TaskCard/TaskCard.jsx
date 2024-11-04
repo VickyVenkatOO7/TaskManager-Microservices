@@ -6,7 +6,7 @@ import SubmissionList from '../SubmissionList';
 import EditTaskForm from '../UpdateTaskForm';
 import { useDispatch } from 'react-redux';
 import { deleteTask } from '../../../ReduxToolKit/TaskSlice';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const role = "ROLE_ADMIN"
 const TaskCard = ({ item }) => {

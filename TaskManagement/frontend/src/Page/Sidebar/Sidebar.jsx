@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import "./Sidebar.css"
 import CreateNewTaskForm from '../Task/CreateTask'
 import { useLocation, useNavigate } from 'react-router-dom';
+import { logout } from '../../ReduxToolKit/AuthSlice';
+import { useDispatch } from 'react-redux';
 
 
 const menu = [
@@ -19,6 +21,7 @@ const role = "ROLE_ADMIN"
 const Sidebar = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [activeMenu, setActiveMenu] = useState("DONE")
 
@@ -50,6 +53,7 @@ const Sidebar = () => {
     }
 
     const handleLogout = () => {
+        dispatch(logout());
         console.log("handle logout");
     }
     return (
