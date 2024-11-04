@@ -3,10 +3,10 @@ import { api, setAuthHeader } from "../Api/api";
 
 export const submitTask = createAsyncThunk("submissions/submitTask",
     async ({ taskId, githubLink }) => {
-        setAuthHeader(localStorage.getItem("jwt", api));
+        setAuthHeader(localStorage.getItem("jwt"), api);
         try {
             const { data } = await api.post(
-                `/api/submissions?task_id=${taskId}&github_link=${githubLink}`, {}
+                `/api/submission?task_id=${taskId}&github_link=${githubLink}`, {}
             );
             console.log("Submitted Task ", data);
             return data;
@@ -21,10 +21,10 @@ export const submitTask = createAsyncThunk("submissions/submitTask",
 export const fetchAllSubmissions = createAsyncThunk(
     "submissions/fetchAllSubmissions",
     async () => {
-        setAuthHeader(localStorage.getItem("jwt", api));
+        setAuthHeader(localStorage.getItem("jwt"), api);
         try {
             const { data } = await api.get(
-                `/api/submissions`, {}
+                `/api/submission`
             );
             console.log("Submissiosns Fetched ", data);
             return data;
@@ -38,13 +38,13 @@ export const fetchAllSubmissions = createAsyncThunk(
 
 export const fetchSubmissionsByTaskId = createAsyncThunk(
     "submissions/fetchSubmissionsByTaskId",
-    async (taskId) => {
-        setAuthHeader(localStorage.getItem("jwt", api));
+    async ({ taskId }) => {
+        setAuthHeader(localStorage.getItem("jwt"), api);
         try {
             const { data } = await api.get(
-                `/api/submissions/task/${taskId}`, {}
+                `/api/submission/task/${taskId}`
             );
-            console.log("Submissiosn Fetched ", data);
+            console.log("Submission Fetched ", data);
             return data;
         } catch (error) {
             console.log("error ", error);
@@ -56,11 +56,11 @@ export const fetchSubmissionsByTaskId = createAsyncThunk(
 
 export const acceptDeclineSubmission = createAsyncThunk(
     "submissions/acceptDeclineSubmission",
-    async (id, status) => {
-        setAuthHeader(localStorage.getItem("jwt", api));
+    async ({ id, status }) => {
+        setAuthHeader(localStorage.getItem("jwt"), api);
         try {
             const { data } = await api.put(
-                `/api/submissions/${id}?status=${status}`, {}
+                `/api/submission/${id}?status=${status}`, {}
             );
             console.log("Task Accepted ", data);
             return data;

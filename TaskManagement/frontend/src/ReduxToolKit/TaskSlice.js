@@ -34,7 +34,7 @@ export const fetchUsersTasks = createAsyncThunk("task/fetchUsersTasks",
 
 
 export const fetchTasksById = createAsyncThunk("task/fetchTasksById",
-    async (taskId) => {
+    async ({taskId}) => {
         setAuthHeader(localStorage.getItem("jwt"), api)
         try {
             const { data } = await api.get(`/api/task/${taskId}`);
