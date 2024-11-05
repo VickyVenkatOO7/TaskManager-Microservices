@@ -13,4 +13,4 @@ export const darkTheme = createTheme({
             main:"rgba(215, 106, 255, 0.507)"
         }
     }
-})
+});
